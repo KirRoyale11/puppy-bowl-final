@@ -25,10 +25,6 @@ modalContent.addEventListener("click", function (e) {
   e.stopPropagation();
 });
 
-/**
- * Fetches all players from the API.
- * @returns {Object[]} the array of player objects
- */
 const fetchAllPlayers = async () => {
   try {
     const response = await fetch(`${API_URL}/players`);
@@ -40,11 +36,6 @@ const fetchAllPlayers = async () => {
   }
 };
 
-/**
- * Fetches a single player from the API.
- * @param {number} playerId
- * @returns {Object} the player object
- */
 const fetchSinglePlayer = async (playerId) => {
   try {
     // TODO
@@ -56,19 +47,14 @@ const fetchSinglePlayer = async (playerId) => {
   }
 };
 
-/**
- * Adds a new player to the roster via the API.
- * @param {Object} playerObj the player to add
- * @returns {Object} the player returned by the API
- */
+
 const addNewPlayer = async (playerObj) => {
   try {
-    // TODO
-    // alert("Adding New Player"); SUCCESS
+//TODO
     const response = await fetch(`${API_URL}/players/`, {
-        method:"POST",
-        body:JSON.stringify(playerObj),
-        headers:{"Content-type": "application/json"},
+      method: "POST",
+      body: JSON.stringify(playerObj),
+      headers: { "Content-type": "application/json" },
     });
     const result = await response.json();
     return result;
@@ -77,10 +63,6 @@ const addNewPlayer = async (playerObj) => {
   }
 };
 
-/**
- * Removes a player from the roster via the API.
- * @param {number} playerId the ID of the player to remove
- */
 const removePlayer = async (playerId) => {
   try {
     // TODO
@@ -89,7 +71,6 @@ const removePlayer = async (playerId) => {
     });
     const result = await response.json();
     return result;
-    
   } catch (err) {
     console.error(
       `Whoops, trouble removing player #${playerId} from the roster!`,
@@ -98,25 +79,7 @@ const removePlayer = async (playerId) => {
   }
 };
 
-/**
- * Updates `<main>` to display a list of all players.
- *
- * If there are no players, a corresponding message is displayed instead.
- *
- * Each player is displayed in a card with the following information:
- * - name
- * - id
- * - image (with alt text of the player's name)
- *
- * Additionally, each card has two buttons:
- * - "See details" button that, when clicked, calls `renderSinglePlayer` to
- *    display more information about the player
- * - "Remove from roster" button that, when clicked, will call `removePlayer` to
- *    remove that specific player and then re-render all players
- *
- * Note: this function should replace the current contents of `<main>`, not append to it.
- * @param {Object[]} playerList - an array of player objects
- */
+
 const renderAllPlayers = (playerList) => {
   try {
     const playerCards = playerList.map((player) => {
@@ -128,7 +91,7 @@ const renderAllPlayers = (playerList) => {
       playerCard.classList.add("player-card-container");
 
       playerImg.src = player.imageUrl;
-      (playerImg.alt = player.name), player.breed;
+      (playerImg.alt = player.name, player.breed);
       playerName.innerText = player.name;
       detailsButton.innerText = "More About Player";
       detailsButton.addEventListener("click", async function () {
@@ -150,38 +113,8 @@ const renderAllPlayers = (playerList) => {
   } catch (error) {
     console.log(error);
   }
-
-  // TODO
-
-  // when you add a event handler to the buttons, you need to pass an id of the player
-  // to the function renderSinglePlayer or removePlayer
-  /*
-     ...your code(player=>{
-      // more code...
-        deleteButton.addEventListener("click", function(){
-          removePlayer(player.id);
-        })
-      })
-
-        // TODO
-    /* Remember, if you're using the modal, when you create the details button,
-    in th event handler, create functionality that adds the class 'modal-open' to the modal var and 'modal-content-open' to the
-    modalContent var */
 };
 
-/**
- * Updates `<main>` to display a single player.
- * The player is displayed in a card with the following information:
- * - name
- * - id
- * - breed
- * - image (with alt text of the player's name)
- * - team name, if the player has one, or "Unassigned"
- *
- * The card also contains a "Back to all players" button that, when clicked,
- * will call `renderAllPlayers` to re-render the full list of players.
- * @param {Object} player an object representing a single player
- */
 const renderSinglePlayer = async (player) => {
   // TODO
   try {
@@ -199,7 +132,7 @@ const renderSinglePlayer = async (player) => {
     deleteButton.addEventListener("click", async (e) => {
       // e.stopPropagation();
       modal.classList.remove("modal-open");
-      modalContainer.classList.remove("modal-content-open");
+      modalContent.classList.remove("modal-content-open");
       await removePlayer(player.id);
       const players = await fetchAllPlayers();
       renderAllPlayers(players);
@@ -214,19 +147,14 @@ const renderSinglePlayer = async (player) => {
     modal.classList.add("modal-open");
     modalContent.classList.add("modal-content-open");
   } catch (error) {
-    console.log(error);
-    console.log("Woof! Could not render single player");
+    
+    console.error("Woof! Could not render single player");
   }
 };
 
-/**
- * Fills in `<form id="new-player-form">` with the appropriate inputs and a submit button.
- * When the form is submitted, it should call `addNewPlayer`, fetch all players,
- * and then render all players to the DOM.
- */
 const renderNewPlayerForm = () => {
-    try {
-        // TODO
+  try {
+    // TODO
     const nameInput = document.createElement("input");
     const nameLabel = document.createElement("label");
     const imgInput = document.createElement("input");
@@ -238,76 +166,72 @@ const renderNewPlayerForm = () => {
     const benchOption = document.createElement("option");
     const fieldOption = document.createElement("option");
 
-  nameInput.setAttribute("id", "playername");
-  nameLabel.innerText = "Name";
-  nameLabel.setAttribute("for", "playername");
+    nameInput.setAttribute("id", "playername");
+    nameLabel.innerText = "Name";
+    nameLabel.setAttribute("for", "playername");
 
-  imgInput.setAttribute("id", "img");
-  imgLabel.innerText = "Image Url";
-  imgLabel.setAttribute("for", "img");
+    imgInput.setAttribute("id", "img");
+    imgLabel.innerText = "Image Url";
+    imgLabel.setAttribute("for", "img");
 
-  breedInput.setAttribute("id", "breed");
-  breedLabel.innerText = "Breed";
-  breedLabel.setAttribute("for", "breed");
+    breedInput.setAttribute("id", "breed");
+    breedLabel.innerText = "Breed";
+    breedLabel.setAttribute("for", "breed");
 
-  status.setAttribute("id", "playerstatus");
-  //   statusLabel.innerText = "Status";
-  //   statusLabel.setAttribute("for", "status");
+    status.setAttribute("id", "playerstatus");
+    //   statusLabel.innerText = "Status";
+    //   statusLabel.setAttribute("for", "status");
 
+    status.appendChild(benchOption);
+    benchOption.value = "bench";
+    benchOption.innerText = "Bench";
+    benchOption.setAttribute("selected", "");
 
+    status.appendChild(fieldOption);
+    fieldOption.value = "field";
+    fieldOption.innerText = "Field";
 
-  status.appendChild(benchOption);
-  benchOption.value = "bench";
-  benchOption.innerText = "Bench";
-  benchOption.setAttribute("selected", "");
-  
-  status.appendChild(fieldOption);
-  fieldOption.value = "field";
-  fieldOption.innerText = "Field";
+    const submitButton = document.createElement("button");
+    submitButton.innerText = "Add New Player";
 
-  const submitButton = document.createElement("button");
-  submitButton.innerText = "Add New Player";
+    addNewPlayerForm.replaceChildren(
+      nameLabel,
+      nameInput,
+      imgLabel,
+      imgInput,
+      breedLabel,
+      breedInput,
+      statusLabel,
+      status,
+      submitButton
+    );
 
-  addNewPlayerForm.replaceChildren(
-    nameLabel,
-    nameInput,
-    imgLabel,
-    imgInput,
-    breedLabel,
-    breedInput,
-    statusLabel,
-    status,
-    submitButton
-  );
-  
-
-  addNewPlayerForm.addEventListener("submit", async function(e) {
-    e.preventDefault();
-    const newPlayer = {
+    addNewPlayerForm.addEventListener("submit", async function (e) {
+      e.preventDefault();
+      const newPlayer = {
         name: playername.value,
-        imageUrl: imgInput.value,
+        imageUrl: img.value,
         breed: breed.value,
         status: playerstatus.value,
+      };
+      const result = await addNewPlayer(newPlayer);
+      if (result.success) {
+        alert("Player successfully added!");
+        playername.value = "";
+        img.value="";
+        breed.value="";
 
-    };
-    const result = await addNewPlayer(newPlayer);
-    if(result.success) {
-    const players = await fetchAllPlayers();
-    renderAllPlayers(players);
-} else if (result.error){
-    console.log("error creating player");
-}
-  });
-
-  
+        const players = await fetchAllPlayers();
+        renderAllPlayers(players);
+      } else if (result.error) {
+        console.log("Error creating player.");
+      }
+    });
   } catch (err) {
     console.log("Uh oh, trouble rendering the new player form!", err);
   }
 };
 
-/**
- * Initializes the app by fetching all players and rendering them to the DOM.
- */
 const init = async () => {
   const players = await fetchAllPlayers();
   renderAllPlayers(players);
